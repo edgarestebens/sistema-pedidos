@@ -17,70 +17,88 @@ import { PricePipe, TimePipe } from '../../shared/format.pipe';
     <div>
       <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1
-            class="font-display text-2xl font-semibold text-charcoal md:text-3xl"
+          <p
+            class="font-ticket text-[10px] uppercase tracking-[0.2em] text-dash-quiet"
           >
-            Pedidos en cocina
+            Pase · en vivo
+          </p>
+          <h1 class="mt-1 text-2xl font-semibold tracking-tight md:text-3xl">
+            Comandas
           </h1>
-          <p class="mt-1 text-sm text-smoke">
-            Arrastrá las tarjetas o usá las flechas. Podés añadir notas por
-            pedido.
+          <p class="mt-1 text-sm text-dash-quiet">
+            Arrastrá el ticket o usá Avanzar. Notas solo si hacen falta.
           </p>
         </div>
-        <p class="text-sm text-smoke">{{ orders.orders().length }} pedidos</p>
+        <p class="font-ticket text-sm text-dash-brass">
+          {{ activeCount }} vivos · {{ orders.orders().length }} total
+        </p>
       </div>
 
       @if (orders.loading() && orders.orders().length === 0) {
-        <p class="text-smoke">Cargando pedidos…</p>
+        <p class="text-dash-quiet">Cargando comandas…</p>
       } @else {
-        <div class="flex gap-4 overflow-x-auto pb-4">
+        <div
+          class="flex gap-3 overflow-x-auto pb-4"
+          style="scroll-snap-type: x mandatory"
+        >
           @for (status of columns; track status) {
             <div
-              class="flex w-72 shrink-0 flex-col rounded-lg bg-cream-muted/60"
+              class="dash-col w-[min(18rem,85vw)] shrink-0"
+              [class.dash-col-flash]="flashStatus() === status"
               (dragover)="$event.preventDefault()"
               (drop)="onDrop(status)"
             >
               <div
-                class="flex items-center justify-between border-b border-charcoal/10 px-3 py-3"
+                class="flex items-center justify-between px-3 py-3"
               >
                 <h2
-                  class="text-sm font-semibold uppercase tracking-wide text-charcoal"
+                  class="font-ticket text-[11px] font-medium uppercase tracking-[0.14em]"
                 >
                   {{ statusLabels[status] }}
                 </h2>
                 <span
-                  class="rounded-full bg-charcoal/10 px-2 py-0.5 text-xs font-medium"
+                  class="font-ticket rounded-sm bg-dash-soot/10 px-2 py-0.5 text-[11px]"
                   >{{ columnOrders(status).length }}</span
                 >
               </div>
-              <div class="flex min-h-[200px] flex-1 flex-col gap-3 p-3">
+              <div [class]="'dash-heat dash-heat-' + status"></div>
+              <div class="flex min-h-[220px] flex-1 flex-col gap-3 p-3">
+                @if (columnOrders(status).length === 0) {
+                  <p
+                    class="flex flex-1 items-center justify-center py-8 text-center text-xs text-dash-quiet"
+                  >
+                    Sin comandas
+                  </p>
+                }
                 @for (order of columnOrders(status); track order.id) {
                   <article
                     draggable="true"
                     (dragstart)="onDragStart(order.id)"
                     (dragend)="draggingId.set(null)"
-                    class="kanban-card cursor-grab rounded-md bg-surface p-3 shadow-sm"
+                    class="dash-ticket kanban-card cursor-grab p-3 pl-4"
                     [class.dragging]="draggingId() === order.id"
+                    [class.dash-ticket-enter]="justMoved() === order.id"
                   >
-                    <div class="flex items-start justify-between gap-2">
+                    <div class="dash-ticket-stub flex items-start justify-between gap-2">
                       <div>
-                        <p class="text-sm font-semibold text-charcoal">
+                        <p class="font-ticket text-base font-semibold tracking-tight">
                           {{ order.orderNumber }}
                         </p>
-                        <p class="text-xs text-smoke">
+                        <p class="mt-0.5 font-ticket text-[11px] text-dash-quiet">
                           {{ order.createdAt | time }} · {{ order.customerName }}
                         </p>
                       </div>
-                      <p class="text-xs font-semibold text-amber">
+                      <p class="font-ticket text-xs font-semibold text-dash-brass">
                         {{ order.total | price }}
                       </p>
                     </div>
-                    <ul class="mt-2 space-y-0.5 text-xs text-charcoal/75">
+                    <ul class="space-y-0.5 text-xs leading-snug opacity-90">
                       @for (item of order.items; track $index) {
                         <li>
-                          {{ item.quantity }}× {{ item.name }}
+                          <span class="font-ticket">{{ item.quantity }}×</span>
+                          {{ item.name }}
                           @if (item.notes) {
-                            <span class="text-smoke"> ({{ item.notes }})</span>
+                            <span class="text-dash-quiet"> ({{ item.notes }})</span>
                           }
                         </li>
                       }
@@ -93,44 +111,52 @@ import { PricePipe, TimePipe } from '../../shared/format.pipe';
                     >
                       @if (editingId() !== order.id) {
                         @if (order.notes) {
-                          <p class="whitespace-pre-wrap text-xs italic text-ember">
+                          <p
+                            class="whitespace-pre-wrap text-xs italic text-dash-ember"
+                          >
                             {{ order.notes }}
                           </p>
+                          <button
+                            type="button"
+                            (click)="startEdit(order)"
+                            class="mt-1 text-xs font-medium text-dash-quiet hover:text-dash-ember"
+                          >
+                            Editar nota
+                          </button>
                         } @else {
-                          <p class="text-xs text-smoke/70">Sin notas</p>
+                          <button
+                            type="button"
+                            (click)="startEdit(order)"
+                            class="text-xs font-medium text-dash-quiet hover:text-dash-ember"
+                          >
+                            + Nota
+                          </button>
                         }
-                        <button
-                          type="button"
-                          (click)="startEdit(order)"
-                          class="mt-1 text-xs font-medium text-amber hover:underline"
-                        >
-                          {{ order.notes ? 'Editar nota' : 'Añadir nota' }}
-                        </button>
                       } @else {
                         <div class="space-y-1.5">
                           <textarea
                             rows="3"
                             [(ngModel)]="draft"
-                            placeholder="Nota para cocina / comentarios…"
-                            class="w-full resize-none rounded border border-charcoal/15 bg-cream px-2 py-1.5 text-xs outline-none focus:border-amber"
+                            placeholder="Nota para cocina…"
+                            class="dash-input w-full resize-none px-2 py-1.5 text-xs"
                           ></textarea>
                           @if (noteError) {
-                            <p class="text-xs text-ember">{{ noteError }}</p>
+                            <p class="text-xs text-dash-ember">{{ noteError }}</p>
                           }
                           <div class="flex gap-2">
                             <button
                               type="button"
                               [disabled]="savingNote"
                               (click)="saveNote(order.id)"
-                              class="btn-ink flex-1 rounded py-1 text-xs disabled:opacity-50"
+                              class="btn-dash-brass flex-1 rounded-sm py-2 text-xs disabled:opacity-50"
                             >
-                              {{ savingNote ? 'Guardando…' : 'Guardar' }}
+                              {{ savingNote ? '…' : 'Guardar' }}
                             </button>
                             <button
                               type="button"
                               [disabled]="savingNote"
                               (click)="editingId.set(null)"
-                              class="flex-1 rounded border border-charcoal/15 py-1 text-xs text-smoke"
+                              class="flex-1 rounded-sm border border-dash-quiet/30 py-2 text-xs text-dash-quiet"
                             >
                               Cancelar
                             </button>
@@ -144,7 +170,7 @@ import { PricePipe, TimePipe } from '../../shared/format.pipe';
                         type="button"
                         [disabled]="!canMove(order, -1)"
                         (click)="moveOrder(order, -1)"
-                        class="flex-1 rounded border border-charcoal/15 py-1.5 text-xs disabled:opacity-40"
+                        class="min-h-10 flex-1 rounded-sm border border-dash-quiet/30 py-2 text-xs disabled:opacity-35"
                       >
                         ← Atrás
                       </button>
@@ -152,7 +178,11 @@ import { PricePipe, TimePipe } from '../../shared/format.pipe';
                         type="button"
                         [disabled]="!canMove(order, 1)"
                         (click)="moveOrder(order, 1)"
-                        class="btn-ink flex-1 rounded py-1.5 text-xs disabled:opacity-40"
+                        [class]="
+                          status === 'en_cocina' || status === 'recibido'
+                            ? 'btn-dash-ember min-h-10 flex-1 rounded-sm py-2 text-xs disabled:opacity-40'
+                            : 'btn-dash-brass min-h-10 flex-1 rounded-sm py-2 text-xs disabled:opacity-40'
+                        "
                       >
                         Avanzar →
                       </button>
@@ -173,9 +203,17 @@ export class OrdersKanbanComponent {
   readonly statusLabels = STATUS_LABELS;
   readonly draggingId = signal<string | null>(null);
   readonly editingId = signal<string | null>(null);
+  readonly flashStatus = signal<OrderStatus | null>(null);
+  readonly justMoved = signal<string | null>(null);
   draft = '';
   noteError = '';
   savingNote = false;
+
+  get activeCount() {
+    return this.orders
+      .orders()
+      .filter((o) => o.status !== 'entregado').length;
+  }
 
   columnOrders(status: OrderStatus) {
     return this.orders.orders().filter((o) => o.status === status);
@@ -188,7 +226,7 @@ export class OrdersKanbanComponent {
   onDrop(status: OrderStatus) {
     const id = this.draggingId();
     if (id) {
-      void this.orders.updateOrderStatus(id, status);
+      void this.applyMove(id, status);
       this.draggingId.set(null);
     }
   }
@@ -201,7 +239,17 @@ export class OrdersKanbanComponent {
   moveOrder(order: Order, direction: -1 | 1) {
     const idx = KANBAN_COLUMNS.indexOf(order.status);
     const next = KANBAN_COLUMNS[idx + direction];
-    if (next) void this.orders.updateOrderStatus(order.id, next);
+    if (next) void this.applyMove(order.id, next);
+  }
+
+  private async applyMove(orderId: string, status: OrderStatus) {
+    await this.orders.updateOrderStatus(orderId, status);
+    this.flashStatus.set(status);
+    this.justMoved.set(orderId);
+    setTimeout(() => {
+      if (this.flashStatus() === status) this.flashStatus.set(null);
+      if (this.justMoved() === orderId) this.justMoved.set(null);
+    }, 600);
   }
 
   startEdit(order: Order) {

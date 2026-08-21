@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
-/* Light (default) */
+/* Light (default) — public site */
 :root {
   --charcoal: #1a1512;
   --charcoal-soft: #2a221c;
@@ -15,15 +15,29 @@
   --surface: #fffbf5;
   --background: var(--cream);
   --foreground: var(--charcoal);
-  /* Fixed brand surfaces (hero / sidebar / footer) */
   --on-media: #f2e8d8;
   --media-panel: #1a1512;
   --media-border: rgba(242, 232, 216, 0.12);
   --font-fraunces: "Fraunces", Georgia, serif;
   --font-source-sans: "Source Sans 3", system-ui, sans-serif;
+  --font-dash: "DM Sans", system-ui, sans-serif;
+  --font-ticket: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Dashboard tokens (pase de cocina) */
+  --dash-ash: #e6e2d8;
+  --dash-soot: #100e0c;
+  --dash-steel: #2c3238;
+  --dash-ember: #ff5a1f;
+  --dash-brass: #c9a227;
+  --dash-chalk: #f3eee4;
+  --dash-ticket: #f7f4ec;
+  --dash-quiet: #6e675c;
+  --dash-heat-recibido: #5a6570;
+  --dash-heat-cocina: #ff5a1f;
+  --dash-heat-listo: #c9a227;
+  --dash-heat-entregado: #8a8378;
 }
 
-/* Dark: remap page tokens; keep media-* for overlays & sidebar */
 html.dark {
   --charcoal: #f0e6d8;
   --charcoal-soft: #d9cbb8;
@@ -41,6 +55,19 @@ html.dark {
   --media-panel: #0e0c0a;
   --media-border: rgba(242, 232, 216, 0.1);
   color-scheme: dark;
+
+  --dash-ash: #161412;
+  --dash-soot: #0a0908;
+  --dash-steel: #3a424a;
+  --dash-ember: #ff5a1f;
+  --dash-brass: #d4b03a;
+  --dash-chalk: #f3eee4;
+  --dash-ticket: #1c1915;
+  --dash-quiet: #9a9286;
+  --dash-heat-recibido: #7a8792;
+  --dash-heat-cocina: #ff5a1f;
+  --dash-heat-listo: #d4b03a;
+  --dash-heat-entregado: #6e675c;
 }
 
 @theme inline {
@@ -58,8 +85,18 @@ html.dark {
   --color-surface: var(--surface);
   --color-on-media: var(--on-media);
   --color-media-panel: var(--media-panel);
+  --color-dash-ash: var(--dash-ash);
+  --color-dash-soot: var(--dash-soot);
+  --color-dash-steel: var(--dash-steel);
+  --color-dash-ember: var(--dash-ember);
+  --color-dash-brass: var(--dash-brass);
+  --color-dash-chalk: var(--dash-chalk);
+  --color-dash-ticket: var(--dash-ticket);
+  --color-dash-quiet: var(--dash-quiet);
   --font-sans: var(--font-source-sans);
   --font-display: var(--font-fraunces);
+  --font-dash: var(--font-dash);
+  --font-ticket: var(--font-ticket);
 }
 
 html {
@@ -76,6 +113,218 @@ body {
 
 .font-display {
   font-family: var(--font-fraunces), Georgia, serif;
+}
+
+.font-dash {
+  font-family: var(--font-dash), system-ui, sans-serif;
+}
+
+.font-ticket {
+  font-family: var(--font-ticket), ui-monospace, monospace;
+}
+
+/* —— Dashboard scope —— */
+.dash {
+  font-family: var(--font-dash), system-ui, sans-serif;
+  background: var(--dash-ash);
+  color: var(--dash-soot);
+  min-height: 100vh;
+}
+
+html.dark .dash {
+  color: var(--dash-chalk);
+}
+
+.dash-rail {
+  background: var(--dash-soot);
+  color: var(--dash-chalk);
+  border-color: rgba(243, 238, 228, 0.08);
+}
+
+.dash-nav-active {
+  background: rgba(255, 90, 31, 0.14);
+  color: var(--dash-ember);
+  box-shadow: inset 3px 0 0 var(--dash-ember);
+}
+
+.dash-ticket {
+  background: var(--dash-ticket);
+  color: var(--dash-soot);
+  border: 1px solid rgba(44, 50, 56, 0.12);
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(16, 14, 12, 0.06);
+  position: relative;
+}
+
+html.dark .dash-ticket {
+  color: var(--dash-chalk);
+  border-color: rgba(243, 238, 228, 0.08);
+}
+
+.dash-ticket::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10%;
+  bottom: 10%;
+  width: 3px;
+  background: var(--dash-steel);
+  opacity: 0.35;
+  border-radius: 1px;
+}
+
+.dash-ticket-stub {
+  border-bottom: 1px dashed rgba(110, 103, 92, 0.35);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.dash-col {
+  background: rgba(44, 50, 56, 0.06);
+  border: 1px solid rgba(44, 50, 56, 0.1);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+}
+
+html.dark .dash-col {
+  background: rgba(243, 238, 228, 0.03);
+  border-color: rgba(243, 238, 228, 0.08);
+}
+
+.dash-heat {
+  height: 3px;
+  width: 100%;
+  border-radius: 0 0 2px 2px;
+}
+
+.dash-heat-recibido {
+  background: var(--dash-heat-recibido);
+}
+.dash-heat-en_cocina {
+  background: var(--dash-heat-cocina);
+  box-shadow: 0 0 12px rgba(255, 90, 31, 0.45);
+  animation: dash-ember-rail 2.8s ease-in-out infinite;
+}
+.dash-heat-listo {
+  background: var(--dash-heat-listo);
+}
+.dash-heat-entregado {
+  background: var(--dash-heat-entregado);
+  opacity: 0.7;
+}
+
+@keyframes dash-ember-rail {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(255, 90, 31, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 90, 31, 0.65);
+  }
+}
+
+.dash-col-flash {
+  animation: dash-col-flash 0.55s ease-out;
+}
+
+@keyframes dash-col-flash {
+  0% {
+    box-shadow: inset 0 0 0 2px var(--dash-ember);
+  }
+  100% {
+    box-shadow: inset 0 0 0 0 transparent;
+  }
+}
+
+.dash-ticket-enter {
+  animation: dash-ticket-slide 0.35s ease-out;
+}
+
+@keyframes dash-ticket-slide {
+  from {
+    opacity: 0.4;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dash-heat-en_cocina,
+  .dash-col-flash,
+  .dash-ticket-enter,
+  .dash-saved {
+    animation: none !important;
+  }
+}
+
+.btn-dash {
+  background: var(--dash-soot);
+  color: var(--dash-chalk);
+  font-family: var(--font-dash), system-ui, sans-serif;
+}
+
+.btn-dash:hover {
+  filter: brightness(1.15);
+}
+
+.btn-dash-ember {
+  background: var(--dash-ember);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-dash-brass {
+  background: var(--dash-brass);
+  color: #1a1508;
+  font-weight: 600;
+}
+
+.dash-input {
+  border: 1px solid rgba(44, 50, 56, 0.18);
+  background: var(--dash-ticket);
+  color: inherit;
+  border-radius: 4px;
+  outline: none;
+}
+
+.dash-input:focus {
+  border-color: var(--dash-ember);
+  box-shadow: 0 0 0 2px rgba(255, 90, 31, 0.15);
+}
+
+.dash-saved {
+  color: var(--dash-brass);
+  animation: dash-saved-pop 0.6s ease-out;
+}
+
+@keyframes dash-saved-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.theme-toggle-ink {
+  border-color: rgba(243, 238, 228, 0.2) !important;
+  background: rgba(243, 238, 228, 0.06) !important;
+  color: var(--dash-chalk) !important;
+}
+
+.theme-toggle-ink:hover {
+  border-color: var(--dash-ember) !important;
+  color: var(--dash-ember) !important;
 }
 
 @keyframes fade-up {
@@ -181,7 +430,6 @@ html.dark .grill-grain {
   transform: scale(1.02);
 }
 
-/* Inverted “pill” buttons that stay dark-on-light contrast in both themes */
 .btn-ink {
   background: var(--media-panel);
   color: var(--on-media);

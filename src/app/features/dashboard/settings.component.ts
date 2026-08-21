@@ -9,31 +9,46 @@ import type { RestaurantSettings } from '../../core/types';
   imports: [FormsModule],
   template: `
     <div class="max-w-xl">
-      <h1 class="font-display text-2xl font-semibold text-charcoal md:text-3xl">
-        Ajustes del negocio
+      <p
+        class="font-ticket text-[10px] uppercase tracking-[0.2em] text-dash-quiet"
+      >
+        Local · ficha
+      </p>
+      <h1 class="mt-1 text-2xl font-semibold tracking-tight md:text-3xl">
+        Ajustes
       </h1>
-      <p class="mt-1 text-sm text-smoke">Los cambios se guardan en Supabase.</p>
+      <p class="mt-1 text-sm text-dash-quiet">
+        Datos que se muestran en el sitio público.
+      </p>
 
       <form class="mt-8 space-y-4" (ngSubmit)="submit()">
         @for (field of fields; track field.key) {
           <label class="block">
-            <span class="mb-1 block text-sm text-smoke">{{ field.label }}</span>
+            <span
+              class="mb-1 block text-xs uppercase tracking-wide text-dash-quiet"
+              >{{ field.label }}</span
+            >
             <input
               [(ngModel)]="form[field.key]"
               [name]="field.key"
-              class="w-full rounded-md border border-charcoal/15 bg-surface px-3 py-2.5 outline-none focus:border-amber"
+              class="dash-input w-full px-3 py-2.5 text-sm"
             />
           </label>
         }
         @if (error) {
-          <p class="text-sm text-ember">{{ error }}</p>
+          <p class="text-sm text-dash-ember">{{ error }}</p>
         }
-        <button
-          type="submit"
-          class="btn-ink rounded-md px-6 py-2.5 text-sm font-medium"
-        >
-          {{ saved ? 'Guardado' : 'Guardar cambios' }}
-        </button>
+        <div class="flex items-center gap-3 pt-2">
+          <button
+            type="submit"
+            class="btn-dash-brass rounded-sm px-6 py-2.5 text-sm"
+          >
+            Guardar cambios
+          </button>
+          @if (saved) {
+            <span class="dash-saved font-ticket text-sm">✓ Guardado</span>
+          }
+        </div>
       </form>
     </div>
   `,
@@ -76,6 +91,6 @@ export class SettingsComponent {
       return;
     }
     this.saved = true;
-    setTimeout(() => (this.saved = false), 2000);
+    setTimeout(() => (this.saved = false), 2200);
   }
 }

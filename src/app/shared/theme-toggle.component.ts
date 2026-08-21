@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ThemeService } from '../services/theme.service';
 
 @Component({
@@ -8,7 +8,11 @@ import { ThemeService } from '../services/theme.service';
     <button
       type="button"
       (click)="theme.cycle()"
-      class="inline-flex items-center gap-1.5 rounded-md border border-charcoal/15 bg-surface px-2.5 py-1.5 text-xs font-medium text-charcoal/80 transition hover:border-amber/50 hover:text-charcoal"
+      [class]="
+        variant === 'ink'
+          ? 'theme-toggle-ink inline-flex items-center gap-1.5 rounded px-2.5 py-1.5 text-xs font-medium transition'
+          : 'inline-flex items-center gap-1.5 rounded-md border border-charcoal/15 bg-surface px-2.5 py-1.5 text-xs font-medium text-charcoal/80 transition hover:border-amber/50 hover:text-charcoal'
+      "
       [attr.aria-label]="'Tema: ' + theme.label()"
       [title]="'Tema: ' + theme.label() + ' (clic para cambiar)'"
     >
@@ -18,6 +22,7 @@ import { ThemeService } from '../services/theme.service';
   `,
 })
 export class ThemeToggleComponent {
+  @Input() variant: 'default' | 'ink' = 'default';
   readonly theme = inject(ThemeService);
 
   get icon() {

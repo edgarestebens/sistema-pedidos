@@ -7,9 +7,9 @@ import { DashboardSidebarComponent } from './dashboard-shell.component';
   standalone: true,
   imports: [RouterOutlet, DashboardSidebarComponent],
   template: `
-    <div class="flex min-h-screen flex-col md:flex-row">
+    <div class="dash flex min-h-screen flex-col md:flex-row">
       <app-dashboard-sidebar />
-      <div class="flex-1 bg-cream p-4 sm:p-6 md:p-8">
+      <div class="flex-1 p-4 sm:p-6 md:p-8">
         <router-outlet />
       </div>
     </div>

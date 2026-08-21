@@ -31,27 +31,30 @@ const EMPTY_FORM: MenuItemInput = {
     <div>
       <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1
-            class="font-display text-2xl font-semibold text-charcoal md:text-3xl"
+          <p
+            class="font-ticket text-[10px] uppercase tracking-[0.2em] text-dash-quiet"
           >
-            Gestionar menú
+            Carta · ficha
+          </p>
+          <h1 class="mt-1 text-2xl font-semibold tracking-tight md:text-3xl">
+            Menú
           </h1>
-          <p class="mt-1 text-sm text-smoke">
-            Creá, editá o pausá platos (se guarda en Supabase).
+          <p class="mt-1 text-sm text-dash-quiet">
+            Creá, editá o pausá platos.
           </p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <input
             type="search"
-            placeholder="Buscar plato…"
+            placeholder="Buscar…"
             [ngModel]="query()"
             (ngModelChange)="query.set($event)"
-            class="w-full max-w-xs rounded-md border border-charcoal/15 bg-surface px-3 py-2 text-sm outline-none focus:border-amber sm:w-56"
+            class="dash-input w-full max-w-xs px-3 py-2 text-sm sm:w-52"
           />
           <button
             type="button"
             (click)="openCreate()"
-            class="btn-ink rounded-md px-4 py-2 text-sm font-medium"
+            class="btn-dash-ember rounded-sm px-4 py-2 text-sm"
           >
             Nuevo plato
           </button>
@@ -59,102 +62,33 @@ const EMPTY_FORM: MenuItemInput = {
       </div>
 
       @if (error) {
-        <p class="mb-4 text-sm text-ember">{{ error }}</p>
-      }
-
-      @if (formOpen()) {
-        <form
-          class="mb-8 space-y-3 rounded-lg bg-surface p-4 shadow-sm"
-          (ngSubmit)="submit()"
-        >
-          <h2 class="font-display text-lg font-semibold">
-            {{ editingId() ? 'Editar plato' : 'Nuevo plato' }}
-          </h2>
-          <input
-            [(ngModel)]="form.name"
-            name="name"
-            placeholder="Nombre"
-            required
-            class="w-full rounded-md border border-charcoal/15 bg-cream px-3 py-2 text-sm outline-none focus:border-amber"
-          />
-          <textarea
-            [(ngModel)]="form.description"
-            name="description"
-            placeholder="Descripción"
-            rows="2"
-            class="w-full rounded-md border border-charcoal/15 bg-cream px-3 py-2 text-sm outline-none focus:border-amber"
-          ></textarea>
-          <div class="grid gap-3 sm:grid-cols-2">
-            <input
-              type="number"
-              [(ngModel)]="form.price"
-              name="price"
-              placeholder="Precio"
-              class="w-full rounded-md border border-charcoal/15 bg-cream px-3 py-2 text-sm outline-none focus:border-amber"
-            />
-            <select
-              [(ngModel)]="form.category"
-              name="category"
-              class="w-full rounded-md border border-charcoal/15 bg-cream px-3 py-2 text-sm outline-none focus:border-amber"
-            >
-              @for (cat of categories; track cat) {
-                <option [value]="cat">{{ labels[cat] }}</option>
-              }
-            </select>
-          </div>
-          <input
-            [(ngModel)]="form.imageUrl"
-            name="imageUrl"
-            placeholder="URL imagen"
-            class="w-full rounded-md border border-charcoal/15 bg-cream px-3 py-2 text-sm outline-none focus:border-amber"
-          />
-          <div class="flex gap-4 text-sm">
-            <label class="flex items-center gap-2">
-              <input type="checkbox" [(ngModel)]="form.available" name="available" />
-              Disponible
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="checkbox" [(ngModel)]="form.popular" name="popular" />
-              Popular
-            </label>
-          </div>
-          <div class="flex gap-2">
-            <button
-              type="submit"
-              [disabled]="saving"
-              class="rounded-md bg-amber px-4 py-2 text-sm font-semibold text-charcoal disabled:opacity-50"
-            >
-              {{ saving ? 'Guardando…' : editingId() ? 'Guardar' : 'Crear plato' }}
-            </button>
-            <button
-              type="button"
-              (click)="closeForm()"
-              class="rounded-md border border-charcoal/15 px-4 py-2 text-sm text-smoke"
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
+        <p class="mb-4 text-sm text-dash-ember">{{ error }}</p>
       }
 
       @if (cart.menuLoading()) {
-        <p class="text-smoke">Cargando menú…</p>
+        <p class="text-dash-quiet">Cargando menú…</p>
+      } @else if (filtered().length === 0) {
+        <p class="py-12 text-center text-sm text-dash-quiet">Sin platos</p>
       } @else {
-        <div class="space-y-3">
+        <div class="space-y-2">
           @for (item of filtered(); track item.id) {
             <div
-              class="flex flex-col gap-3 rounded-lg bg-surface p-4 sm:flex-row sm:items-center"
+              class="dash-ticket flex flex-col gap-3 p-3 pl-4 sm:flex-row sm:items-center"
             >
               <img
                 [src]="item.image"
                 [alt]="item.name"
-                class="h-16 w-20 rounded object-cover"
+                class="h-14 w-20 shrink-0 object-cover"
+                style="border-radius: 2px"
               />
               <div class="min-w-0 flex-1">
-                <p class="font-semibold text-charcoal">{{ item.name }}</p>
-                <p class="text-xs text-smoke">
-                  {{ labels[item.category] }} · {{ item.price | price }}
-                  {{ item.available ? '' : ' · pausado' }}
+                <p class="font-semibold">{{ item.name }}</p>
+                <p class="font-ticket text-[11px] text-dash-quiet">
+                  {{ labels[item.category] }} ·
+                  <span class="text-dash-brass">{{ item.price | price }}</span>
+                  @if (!item.available) {
+                    <span> · pausado</span>
+                  }
                 </p>
               </div>
               <div class="flex flex-wrap gap-2">
@@ -162,14 +96,14 @@ const EMPTY_FORM: MenuItemInput = {
                   type="button"
                   [disabled]="busyId() === item.id"
                   (click)="toggle(item)"
-                  class="rounded border border-charcoal/15 px-3 py-1.5 text-xs"
+                  class="rounded-sm border border-dash-quiet/30 px-3 py-2 text-xs"
                 >
                   {{ item.available ? 'Pausar' : 'Activar' }}
                 </button>
                 <button
                   type="button"
                   (click)="openEdit(item)"
-                  class="rounded border border-charcoal/15 px-3 py-1.5 text-xs"
+                  class="rounded-sm border border-dash-quiet/30 px-3 py-2 text-xs"
                 >
                   Editar
                 </button>
@@ -177,13 +111,116 @@ const EMPTY_FORM: MenuItemInput = {
                   type="button"
                   [disabled]="busyId() === item.id"
                   (click)="remove(item)"
-                  class="rounded border border-ember/30 px-3 py-1.5 text-xs text-ember"
+                  class="rounded-sm border border-dash-ember/40 px-3 py-2 text-xs text-dash-ember"
                 >
                   Eliminar
                 </button>
               </div>
             </div>
           }
+        </div>
+      }
+
+      @if (formOpen()) {
+        <div
+          class="fixed inset-0 z-50 flex justify-end bg-dash-soot/50"
+          (click)="closeForm()"
+        >
+          <form
+            class="flex h-full w-full max-w-md flex-col overflow-y-auto border-l border-dash-quiet/20 bg-dash-ash p-5 shadow-xl"
+            style="color: inherit"
+            (click)="$event.stopPropagation()"
+            (ngSubmit)="submit()"
+          >
+            <p
+              class="font-ticket text-[10px] uppercase tracking-[0.18em] text-dash-quiet"
+            >
+              {{ editingId() ? 'Editar' : 'Nuevo' }}
+            </p>
+            <h2 class="mt-1 text-xl font-semibold">
+              {{ editingId() ? 'Editar plato' : 'Nuevo plato' }}
+            </h2>
+            <div class="mt-6 space-y-3">
+              <input
+                [(ngModel)]="form.name"
+                name="name"
+                placeholder="Nombre"
+                required
+                class="dash-input w-full px-3 py-2 text-sm"
+              />
+              <textarea
+                [(ngModel)]="form.description"
+                name="description"
+                placeholder="Descripción"
+                rows="2"
+                class="dash-input w-full px-3 py-2 text-sm"
+              ></textarea>
+              <div class="grid gap-3 sm:grid-cols-2">
+                <input
+                  type="number"
+                  [(ngModel)]="form.price"
+                  name="price"
+                  placeholder="Precio"
+                  class="dash-input w-full px-3 py-2 font-ticket text-sm"
+                />
+                <select
+                  [(ngModel)]="form.category"
+                  name="category"
+                  class="dash-input w-full px-3 py-2 text-sm"
+                >
+                  @for (cat of categories; track cat) {
+                    <option [value]="cat">{{ labels[cat] }}</option>
+                  }
+                </select>
+              </div>
+              <input
+                [(ngModel)]="form.imageUrl"
+                name="imageUrl"
+                placeholder="URL imagen"
+                class="dash-input w-full px-3 py-2 text-sm"
+              />
+              <div class="flex gap-4 text-sm">
+                <label class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="form.available"
+                    name="available"
+                  />
+                  Disponible
+                </label>
+                <label class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="form.popular"
+                    name="popular"
+                  />
+                  Popular
+                </label>
+              </div>
+            </div>
+            <div class="mt-auto flex gap-2 pt-8">
+              <button
+                type="submit"
+                [disabled]="saving"
+                class="btn-dash-brass flex-1 rounded-sm py-2.5 text-sm disabled:opacity-50"
+              >
+                {{
+                  saving
+                    ? 'Guardando…'
+                    : editingId()
+                      ? 'Guardar'
+                      : 'Crear plato'
+                }}
+              </button>
+              <button
+                type="button"
+                (click)="closeForm()"
+                class="flex-1 rounded-sm border border-dash-quiet/30 py-2.5 text-sm text-dash-quiet"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
         </div>
       }
     </div>
