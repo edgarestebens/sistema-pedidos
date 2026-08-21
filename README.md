@@ -8,6 +8,13 @@ Angular 19 + Supabase (Auth, Postgres, Realtime).
 2. `npm install && npm run dev`
 3. Abrí [http://localhost:4200](http://localhost:4200)
 
+## Demo online
+
+Después del deploy a GitHub Pages:
+
+https://edgarestebens.github.io/sistema-pedidos/
+
+
 ## Credenciales demo
 
 | Rol | Email | Contraseña |
