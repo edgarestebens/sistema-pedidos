@@ -122,7 +122,7 @@ import { PricePipe, TimePipe } from '../../shared/format.pipe';
                               type="button"
                               [disabled]="savingNote"
                               (click)="saveNote(order.id)"
-                              class="flex-1 rounded bg-charcoal py-1 text-xs text-cream disabled:opacity-50"
+                              class="btn-ink flex-1 rounded py-1 text-xs disabled:opacity-50"
                             >
                               {{ savingNote ? 'Guardando…' : 'Guardar' }}
                             </button>
@@ -152,7 +152,7 @@ import { PricePipe, TimePipe } from '../../shared/format.pipe';
                         type="button"
                         [disabled]="!canMove(order, 1)"
                         (click)="moveOrder(order, 1)"
-                        class="flex-1 rounded bg-charcoal py-1.5 text-xs text-cream disabled:opacity-40"
+                        class="btn-ink flex-1 rounded py-1.5 text-xs disabled:opacity-40"
                       >
                         Avanzar →
                       </button>

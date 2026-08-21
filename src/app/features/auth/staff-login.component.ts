@@ -2,13 +2,19 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ThemeToggleComponent } from '../../shared/theme-toggle.component';
 
 @Component({
   selector: 'app-staff-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ThemeToggleComponent],
   template: `
-    <div class="flex min-h-screen items-center justify-center bg-cream px-4">
+    <div
+      class="relative flex min-h-screen items-center justify-center bg-cream px-4"
+    >
+      <div class="absolute right-4 top-4">
+        <app-theme-toggle />
+      </div>
       <div class="w-full max-w-md">
         <h1 class="font-display text-3xl font-semibold text-charcoal">
           Acceso staff
@@ -43,7 +49,7 @@ import { AuthService } from '../../services/auth.service';
           <button
             type="submit"
             [disabled]="busy"
-            class="w-full rounded-md bg-charcoal py-3 text-sm font-medium text-cream disabled:opacity-50"
+            class="btn-ink w-full rounded-md py-3 text-sm font-medium disabled:opacity-50"
           >
             {{ busy ? 'Entrando…' : 'Entrar al panel' }}
           </button>

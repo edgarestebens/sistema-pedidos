@@ -48,7 +48,7 @@ import { AuthService } from '../../services/auth.service';
         <button
           type="submit"
           [disabled]="busy"
-          class="w-full rounded-md bg-charcoal py-3 text-sm font-medium text-cream disabled:opacity-50"
+          class="btn-ink w-full rounded-md py-3 text-sm font-medium disabled:opacity-50"
         >
           {{ busy ? 'Creando…' : 'Crear cuenta' }}
         </button>

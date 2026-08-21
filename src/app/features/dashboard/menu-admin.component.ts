@@ -51,7 +51,7 @@ const EMPTY_FORM: MenuItemInput = {
           <button
             type="button"
             (click)="openCreate()"
-            class="rounded-md bg-charcoal px-4 py-2 text-sm font-medium text-cream"
+            class="btn-ink rounded-md px-4 py-2 text-sm font-medium"
           >
             Nuevo plato
           </button>

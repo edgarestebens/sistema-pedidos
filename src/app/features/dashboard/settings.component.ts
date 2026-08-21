@@ -30,7 +30,7 @@ import type { RestaurantSettings } from '../../core/types';
         }
         <button
           type="submit"
-          class="rounded-md bg-charcoal px-6 py-2.5 text-sm font-medium text-cream hover:bg-charcoal-soft"
+          class="btn-ink rounded-md px-6 py-2.5 text-sm font-medium"
         >
           {{ saved ? 'Guardado' : 'Guardar cambios' }}
         </button>

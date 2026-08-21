@@ -24,7 +24,7 @@ import { PricePipe } from '../../shared/format.pipe';
           </p>
           <a
             routerLink="/login"
-            class="mt-6 inline-block rounded-md bg-charcoal px-5 py-2.5 text-sm text-cream"
+            class="btn-ink mt-6 inline-block rounded-md px-5 py-2.5 text-sm"
             >Ir a login</a
           >
         </div>
@@ -48,7 +48,7 @@ import { PricePipe } from '../../shared/format.pipe';
           <p class="mt-3 text-smoke">Podés seguir el estado en Mis pedidos.</p>
           <a
             routerLink="/mis-pedidos"
-            class="mt-8 inline-block rounded-md bg-charcoal px-6 py-3 text-sm font-medium text-cream"
+            class="btn-ink mt-8 inline-block rounded-md px-6 py-3 text-sm font-medium"
             >Ver mis pedidos</a
           >
         </div>
@@ -118,7 +118,7 @@ import { PricePipe } from '../../shared/format.pipe';
                   (click)="paymentMethod = 'tarjeta'"
                   [class]="
                     paymentMethod === 'tarjeta'
-                      ? 'bg-charcoal text-cream'
+                      ? 'btn-ink'
                       : 'bg-cream-muted text-charcoal'
                   "
                   class="rounded-md px-4 py-2 text-sm font-medium"
@@ -130,7 +130,7 @@ import { PricePipe } from '../../shared/format.pipe';
                   (click)="paymentMethod = 'efectivo'"
                   [class]="
                     paymentMethod === 'efectivo'
-                      ? 'bg-charcoal text-cream'
+                      ? 'btn-ink'
                       : 'bg-cream-muted text-charcoal'
                   "
                   class="rounded-md px-4 py-2 text-sm font-medium"

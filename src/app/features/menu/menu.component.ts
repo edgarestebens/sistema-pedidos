@@ -23,7 +23,7 @@ import { PricePipe } from '../../shared/format.pipe';
             (click)="active.set('todos')"
             [class]="
               active() === 'todos'
-                ? 'bg-charcoal text-cream'
+                ? 'btn-ink'
                 : 'bg-cream-muted text-charcoal/80 hover:bg-charcoal/10'
             "
             class="shrink-0 rounded-md px-4 py-2 text-sm font-medium transition"
@@ -36,7 +36,7 @@ import { PricePipe } from '../../shared/format.pipe';
               (click)="active.set(cat)"
               [class]="
                 active() === cat
-                  ? 'bg-charcoal text-cream'
+                  ? 'btn-ink'
                   : 'bg-cream-muted text-charcoal/80 hover:bg-charcoal/10'
               "
               class="shrink-0 rounded-md px-4 py-2 text-sm font-medium transition"
@@ -72,7 +72,7 @@ import { PricePipe } from '../../shared/format.pipe';
                   type="button"
                   [disabled]="!item.available"
                   (click)="add(item)"
-                  class="mt-4 w-full rounded-md bg-charcoal py-2.5 text-sm font-medium text-cream transition hover:bg-charcoal-soft disabled:cursor-not-allowed disabled:opacity-40"
+                  class="btn-ink mt-4 w-full rounded-md py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {{ item.available ? 'Agregar al carrito' : 'No disponible' }}
                 </button>

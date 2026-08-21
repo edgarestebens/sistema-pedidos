@@ -3,11 +3,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CartService } from '../services/cart.service';
 import { OrdersService } from '../services/orders.service';
+import { ThemeToggleComponent } from '../shared/theme-toggle.component';
 
 @Component({
   selector: 'app-public-nav',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, ThemeToggleComponent],
   template: `
     <header
       class="sticky top-0 z-40 border-b border-charcoal/10 bg-cream/90 backdrop-blur-md"
@@ -38,6 +39,7 @@ import { OrdersService } from '../services/orders.service';
         </nav>
 
         <div class="flex items-center gap-2 sm:gap-3">
+          <app-theme-toggle />
           @if (auth.user()?.role === 'admin' || auth.user()?.role === 'cocinero') {
             <a
               routerLink="/dashboard/pedidos"
@@ -69,12 +71,12 @@ import { OrdersService } from '../services/orders.service';
           }
           <a
             routerLink="/carrito"
-            class="relative inline-flex items-center gap-2 rounded-md bg-charcoal px-3 py-2 text-sm font-medium text-cream transition hover:bg-charcoal-soft"
+            class="btn-ink relative inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition"
           >
             <span>Carrito</span>
             @if (cart.itemCount() > 0) {
               <span
-                class="flex h-5 min-w-5 items-center justify-center rounded-full bg-amber px-1 text-xs font-bold text-charcoal"
+                class="flex h-5 min-w-5 items-center justify-center rounded-full bg-amber px-1 text-xs font-bold text-[color:var(--media-panel)]"
                 >{{ cart.itemCount() }}</span
               >
             }

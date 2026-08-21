@@ -28,22 +28,22 @@ import { OrdersService } from '../../services/orders.service';
           Parrilla · un solo lugar
         </p>
         <h1
-          class="animate-fade-up delay-1 mt-3 max-w-2xl font-display text-5xl font-semibold leading-[1.05] text-cream sm:text-6xl md:text-7xl"
+          class="animate-fade-up delay-1 mt-3 max-w-2xl font-display text-5xl font-semibold leading-[1.05] text-on-media sm:text-6xl md:text-7xl"
         >
           {{ name }}
         </h1>
-        <p class="animate-fade-up delay-2 mt-4 max-w-md text-lg text-cream/80">
+        <p class="animate-fade-up delay-2 mt-4 max-w-md text-lg text-on-media/80">
           {{ tagline }}
         </p>
         <div class="animate-fade-up delay-3 mt-8 flex flex-wrap gap-3">
           <a
             routerLink="/menu"
-            class="rounded-md bg-amber px-7 py-3.5 text-sm font-semibold text-charcoal transition hover:bg-amber-hot"
+            class="rounded-md bg-amber px-7 py-3.5 text-sm font-semibold text-[color:var(--media-panel)] transition hover:bg-amber-hot"
             >Ver menú y pedir</a
           >
           <a
             routerLink="/login"
-            class="rounded-md border border-cream/35 px-7 py-3.5 text-sm font-medium text-cream transition hover:border-cream/70"
+            class="rounded-md border border-on-media/35 px-7 py-3.5 text-sm font-medium text-on-media transition hover:border-on-media/70"
             >Mi cuenta</a
           >
         </div>
